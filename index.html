@@ -2,30 +2,31 @@
 <html>
 
     <head>
+        <meta charset="UTF-8">
+
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 
-        <script>
-            let scroll_list_hover = false;
-            $(document).ready(function () {
-                // scroll-list hover
-                $('.scroll-list').hover(
-                    function () {
-                        scroll_list_hover = true;
-                    },
-                    function () {
-                        scroll_list_hover = false;
-                    }
-                );
+        <!-- jQuery-mousewheel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js" integrity="sha512-rCjfoab9CVKOH/w/T6GbBxnAH5Azhy4+q1EXW5XEURefHbIkRbQ++ZR+GBClo3/d3q583X/gO4FKmOFuhkKrdA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-                // Scroll action
-                $(document).on('scroll', function() {
-                    console.log('test');
-                    if ($(document).scrollTop() > $(document).scrollTop() - 100) {
+        <script>
+            let scroll_list_y = 0;
+            let scroll_list_scale = 0.01;
+            let scroll_list_y_scaled = Math.trunc(scroll_list_y * scroll_list_scale);
+            let scroll_list_y_scaled_temp = scroll_list_y_scaled;
+            $(document).ready(function () {
+                // using on
+                $('.scroll-list').on('mousewheel', function(event) {
+                    // console.log(event.deltaX, event.deltaY, event.deltaFactor);
+                    scroll_list_y += event.deltaY;
+                    scroll_list_y_scaled = Math.trunc(scroll_list_y * scroll_list_scale);
+                    if (scroll_list_y_scaled > scroll_list_y_scaled_temp) {
                         scrollListUp();
-                    } else {
+                    } else if (scroll_list_y_scaled < scroll_list_y_scaled_temp) {
                         scrollListDown();
                     }
+                    scroll_list_y_scaled_temp = scroll_list_y_scaled;
                 });
             });
 
@@ -130,7 +131,7 @@
     </head>
 
     <body>
-        <h1>East St Goods</h1>
+        <h1>East St Goodies</h1>
         <ul class="scroll-list">
             <li class="show current">List item 1</li>
             <li class="show dn li-1">List item 2</li>
