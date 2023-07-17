@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+        <script>
+            let scroll_list_hover = false;
+            $(document).ready(function () {
+                // scroll-list hover
+                $('.scroll-list').hover(
+                    function () {
+                        scroll_list_hover = true;
+                    },
+                    function () {
+                        scroll_list_hover = false;
+                    }
+                );
+
+                // Scroll action
+                $(document).on('scroll', function() {
+                    console.log('test');
+                    if ($(document).scrollTop() > $(document).scrollTop() - 100) {
+                        scrollListUp();
+                    } else {
+                        scrollListDown();
+                    }
+                });
+            });
+
+            function scrollListUp() {
+                const list_items = $('.scroll-list li').toArray();
+                if (list_items[0].hasClass('current')) {
+                    // Do nothing since list is already at top
+                } else {
+                    for (let i = 0; i < list_items.length; i++) {
+                        // Handle current
+                        if (list_items[i].hasClass('current')) {
+                            list_items[i].removeClass('current');
+                            list_items[i - 1].addClass('current');
+                        }
+                        // handle other classes
+                        for (let j = 0; j < 3; j++) {
+                            if (list_items[i].hasClass('li-' + (j+1))) {
+                                if (list_items[i].hasClass('up')) {  // Up list items
+                                    list_items[i].removeClass('li-' + (j + 1));
+                                    if (j != 0) {
+                                        list_items[i].addClass('li-' + i);
+                                        break;
+                                    }
+                                } else if (list_items[i].hasClass('dn')) {  // Down list items
+                                    list_items[i].removeClass('li-' + (j + 1));
+                                    if (j != 2) {
+                                        list_items[i].addClass('li-' + (i + 2));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function scrollListDown() {
+                const list_items = $('.scroll-list li').toArray();
+                if (list_items[list_items.length-1].hasClass('current')) {
+                    // Do nothing since list is already at bottom
+                } else {
+                    for (let i = 0; i < list_items.length; i++) {
+                        // Handle current
+                        if (list_items[i].hasClass('current')) {
+                            list_items[i].removeClass('current');
+                            list_items[i + 1].addClass('current');
+                        }
+                        // handle other classes
+                        for (let j = 0; j < 3; j++) {
+                            if (list_items[i].hasClass('li-' + (j + 1))) {
+                                if (list_items[i].hasClass('up')) {  // Up list items
+                                    list_items[i].removeClass('li-' + (j + 1));
+                                    if (j != 0) {
+                                        list_items[i].addClass('li-' + (i + 2));
+                                        break;
+                                    }
+                                } else if (list_items[i].hasClass('dn')) {  // Down list items
+                                    list_items[i].removeClass('li-' + (j + 1));
+                                    if (j != 2) {
+                                        list_items[i].addClass('li-' + i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+
+        <style>
+            .scroll-list {
+                height: 500px;
+                width: fit-content;
+                background-color: gray;
+            }
+
+            .scroll-list li {
+                display: none;
+            }
+
+            .scroll-list li.show {
+                display: block;
+            }
+
+            .current {
+                font-size: 30px;
+            }
+
+            .li-1 {
+                font-size: 20px;
+            }
+
+            .li-2 {
+                font-size: 10px;
+            }
+
+            .li-3 {
+                font-size: 5px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>East St Goods</h1>
+        <ul class="scroll-list">
+            <li class="show current">List item 1</li>
+            <li class="show dn li-1">List item 2</li>
+            <li class="show dn li-2">List item 3</li>
+            <li class="show dn li-3">List item 4</li>
+            <li>List item 5</li>
+            <li>List item 6</li>
+            <li>List item 7</li>
+        </ul>
+    </body>
+
+</html>
